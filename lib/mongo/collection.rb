@@ -26,7 +26,11 @@ module Mongo
     end
 
     def find_one(filter)
-      @wrapped.find(Mongo::Codec::BsonHash.new(filter)).first
+      @wrapped.find(wrap(filter)).first
+    end
+
+    def find(filter)
+      @wrapped.find(wrap(filter))
     end
 
     def insert_one(document)
@@ -37,8 +41,30 @@ module Mongo
        @wrapped.insert_many(documents)
     end
 
+    def update_one(filter, update)
+       @wrapped.update_one(wrap(filter), wrap(update))
+    end
+
+    def update_many(filter, update)
+      @wrapped.update_many(wrap(filter), wrap(update))
+    end
+
+    def delete_one(filter)
+      @wrapped.delete_one(wrap(filter))
+    end
+
+    def delete_many(filter)
+      @wrapped.delete_many(wrap(filter))
+    end
+
     def drop
       @wrapped.drop
     end
+
+    private
+    def wrap(hash)
+      Mongo::Codec::BsonHash.new(hash)
+    end
+
   end
 end
