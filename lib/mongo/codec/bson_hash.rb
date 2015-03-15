@@ -25,7 +25,7 @@ module Mongo
       end
 
       def to_bson_document(a_class, codec_registry)
-        BsonDocumentWrapper.new(@hash, Mongo::HashCodec.new)
+        BsonDocumentWrapper.new(@hash, Mongo::Codec::HashCodec.new)
       end
 
     end

@@ -13,6 +13,7 @@
 # limitations under the License.
 
 require 'mongo/codec/hash_codec'
+require 'mongo/database'
 
 java_import com.mongodb.ServerAddress
 java_import com.mongodb.MongoClient
@@ -21,17 +22,17 @@ java_import org.bson.codecs.configuration.CodecRegistries
 
 module Mongo
   class Client
-    include Mongo::Codec
 
     def initialize
       options = MongoClientOptions.builder.codec_registry(
-          CodecRegistries.fromRegistries(CodecRegistries.from_codecs([HashCodec.new]), MongoClient.get_default_codec_registry)).build
+          CodecRegistries.fromRegistries(CodecRegistries.from_codecs([Mongo::Codec::HashCodec.new]),
+                                         MongoClient.get_default_codec_registry)).build
 
       @wrapped = MongoClient.new(ServerAddress.new, options)
     end
 
     def get_database(name)
-      Database.new(@wrapped::get_database(name))
+      Mongo::Database.new(@wrapped::get_database(name))
     end
   end
 end

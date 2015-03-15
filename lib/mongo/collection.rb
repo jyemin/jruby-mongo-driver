@@ -16,7 +16,6 @@ require 'mongo/codec/bson_hash'
 
 module Mongo
   class Collection
-    include Mongo::Codec::BsonHash
 
     def initialize(wrapped)
       @wrapped = wrapped
@@ -27,7 +26,7 @@ module Mongo
     end
 
     def find_one(filter)
-      @wrapped.find(BsonHash.new(filter)).first
+      @wrapped.find(Mongo::Codec::BsonHash.new(filter)).first
     end
 
     def insert_one(document)

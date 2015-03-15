@@ -12,6 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+require 'mongo/collection'
+
 module Mongo
   class Database
 
@@ -20,7 +22,7 @@ module Mongo
     end
 
     def get_collection(name)
-      Collection.new(@wrapped::get_collection(name, java.lang.ClassLoader.get_system_class_loader.load_class('org.jruby.RubyHash')))
+      Mongo::Collection.new(@wrapped::get_collection(name, java.lang.ClassLoader.get_system_class_loader.load_class('org.jruby.RubyHash')))
     end
 
   end
