@@ -34,3 +34,13 @@ collection.find({}).each { |d| puts d.to_s }
 collection.delete_many({})
 
 collection.find({}).each { |d| puts d.to_s }
+
+t1 = Time.now
+
+100000.times do
+  collection.update_one({_id: 0}, {"$set" => {"x" => 1}})
+end
+
+t2 = Time.now
+
+puts t2 - t1
